@@ -1,0 +1,1 @@
+LOCAL_SETTINGS_SECRET_KEY = 'django-insecure-a6$7gmmlo1eep*(_)w#&3*m0eiryd4(u$srsl&fe@5s6-i(m)t'

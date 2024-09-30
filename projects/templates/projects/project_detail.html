@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<h1>In App template: {{object.name}}</h1>
+
+{% if object.description %}
+<p>{{object.description}}</p>
+{% else %}
+<p>Description Coming Soon</p>
+{% endif %}
+
+{% if object.time_frame_for_completion %}
+<p>{{object.time_frame_for_completion}}</p>
+{% else %}
+<p>Time frame coming soon</p>
+{% endif %}
+
+{% if object.time_created %}
+<p>{{object.time_created}}</p>
+{% else %}
+<p>Time created coming soon</p>
+{% endif %}
+
+{% if object.time_updated %}
+<p>{{object.time_updated}}</p>
+{% else %}
+<p>Time updated</p>
+{% endif %}
+
+
+{% endblock %}
