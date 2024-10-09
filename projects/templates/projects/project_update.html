@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<h2>Update Project</h2>
+
+<form action='.' method='POST'>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type='submit' value='Save Changes' />
+</form>
+
+<a href="{% url 'projects:projects-list' %}">Back to Project List</a>
+
+{% endblock %}

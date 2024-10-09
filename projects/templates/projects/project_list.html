@@ -4,17 +4,15 @@
 {% block content %}
 
 
-{% for project in object_list %}
-
-
         <h1>Project List</h1>
         <ul>
             {% for project in object_list %}
                 <li>{{ project.name }}</li>
+                <a href="{% url 'projects:projects-detail' project.pk %}">View</a>
+                <a href="{% url 'projects:projects-update' project.pk %}">Edit</a>
+                <a href="{% url 'projects:projects-delete' project.pk %}">Delete</a>
             {% endfor %}
         </ul>
 
-{% endfor %}
-
-
+        <a href="{% url 'projects:projects-create' %}">Create New Project</a>
 {% endblock %}

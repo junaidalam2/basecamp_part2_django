@@ -30,4 +30,7 @@
 {% endif %}
 
 
+<a href="{% url 'projects:projects-update' object.pk %}">Edit</a>
+<a href="{% url 'projects:projects-list' %}">Back to Project List</a>
+
 {% endblock %}
