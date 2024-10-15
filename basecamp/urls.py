@@ -21,7 +21,7 @@ from basecamp.views import HomeView
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
-    #path('', home_view, name='home'),
     path('admin/', admin.site.urls),
     path('projects/', include('projects.urls')), 
+    path('users/', include('users.urls')), 
 ]

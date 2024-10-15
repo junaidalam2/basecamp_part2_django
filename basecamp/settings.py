@@ -41,8 +41,12 @@ INSTALLED_APPS = [
 
 
     #own
-    'projects'
+    'projects',
+    'users',
 ]
+
+
+AUTH_USER_MODEL = 'users.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -74,6 +78,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'basecamp.wsgi.application'
 
+LOGIN_REDIRECT_URL = '/'
+
+LOGIN_URL = '/login/'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
