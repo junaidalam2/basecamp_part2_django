@@ -30,11 +30,20 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractUser):
-    """Custom user model where email is the unique identifier instead of username."""
     
+    PERMISSIONS_USER = 'user'
+    PERMISSIONS_ADMIN = 'admin'
+
+    USER_PERMISSIONS = [
+        (PERMISSIONS_USER, 'User'),
+        (PERMISSIONS_ADMIN, 'Admin'),
+    ]
+
     username = None  # Disable username
     email = models.EmailField(_("email address"), max_length=100, unique=True)
     date_joined = models.DateTimeField(verbose_name="date joined", auto_now_add=True)
+    max_permissions_length = max(len(PERMISSIONS_USER), len(PERMISSIONS_ADMIN))
+    permissions = models.CharField(choices=USER_PERMISSIONS, default=PERMISSIONS_USER, max_length = max_permissions_length)
 
     USERNAME_FIELD = "email"  # Set email as the username field
     REQUIRED_FIELDS = ['first_name', 'last_name']  # Fields required on superuser creation

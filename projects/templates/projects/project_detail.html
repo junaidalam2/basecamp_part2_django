@@ -3,30 +3,65 @@
 
 {% block content %}
 
-<h1>In App template: {{object.name}}</h1>
+<h1>Project Name: {{object.name}}</h1>
 
 {% if object.description %}
+<h3>Project Description</h3>
 <p>{{object.description}}</p>
 {% else %}
 <p>Description Coming Soon</p>
 {% endif %}
 
 {% if object.time_frame_for_completion %}
+<h3>Time Frame for Completion</h3>
 <p>{{object.time_frame_for_completion}}</p>
 {% else %}
 <p>Time frame coming soon</p>
 {% endif %}
 
+{% if object.status %}
+<h3>Status</h3>
+<p>{{object.get_status_display}}</p>
+{% else %}
+<p>Status coming soon</p>
+{% endif %}
+
 {% if object.time_created %}
+<h3>Time Created</h3>
 <p>{{object.time_created}}</p>
 {% else %}
 <p>Time created coming soon</p>
 {% endif %}
 
 {% if object.time_updated %}
+<h3>Last Updated</h3>
 <p>{{object.time_updated}}</p>
 {% else %}
-<p>Time updated</p>
+<p>Time updated coming soon</p>
+{% endif %}
+
+
+<h3>Team Leads</h3>
+{% if team_leads %}
+    <ul>
+        {% for lead in team_leads %}
+        <li>{{ lead.user.get_full_name }} ({{ lead.user.email }})</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No team leads assigned yet.</p>
+{% endif %}
+
+
+<h3>Team Members</h3>
+{% if team_members %}
+    <ul>
+        {% for member in team_members %}
+        <li>{{ member.user.get_full_name }} ({{ member.user.email }})</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No team members assigned yet.</p>
 {% endif %}
 
 

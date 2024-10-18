@@ -17,11 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from basecamp.views import HomeView
-#from basecamp.views import home_view 
+
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('admin/', admin.site.urls),
     path('projects/', include('projects.urls')), 
-    path('users/', include('users.urls')), 
+    path('users/', include(('users.urls', 'users'), namespace='users')), 
 ]

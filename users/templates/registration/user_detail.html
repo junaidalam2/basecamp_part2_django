@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<h1>{{object.name}}</h1>
+<ul>
+        <li>{{ object.first_name }} {{ object.last_name }}, {{ object.email }}, {{ object.permissions }}, {{ object.date_joined }}</li>
+</ul>
+
+
+{% endblock %}

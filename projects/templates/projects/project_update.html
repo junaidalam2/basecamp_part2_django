@@ -7,10 +7,59 @@
 
 <form action='.' method='POST'>
     {% csrf_token %}
-    {{ form.as_p }}
+    
+    <label for="id_name">Project Name</label>
+    {{ form.name }}
+
+    <label for="id_description">Description</label>
+    {{ form.description }}
+
+    <label for="id_time_frame_for_completion">Time Frame for Completion</label>
+    {{ form.time_frame_for_completion }}
+
+    <label for="id_status">Status</label>
+    {{ form.status }}
+
+    <h3>Assign Team Leads</h3>
+    <label for="id_team_leads">Team Leads</label>
+    <div id="team_leads_container">
+        {{ form.team_leads }}
+    </div>
+
+    <h3>Assign Team Members</h3>
+    <label for="id_team_members">Team Members</label>
+    <div id="team_members_container">
+        {{ form.team_members }}
+    </div>
+
     <input type='submit' value='Save Changes' />
 </form>
 
 <a href="{% url 'projects:projects-list' %}">Back to Project List</a>
+
+
+<script>
+    const teamLeadsContainer = document.getElementById('team_leads_container');
+    const teamMembersContainer = document.getElementById('team_members_container');
+
+    function updateOptions() {
+        const selectedLeads = Array.from(teamLeadsContainer.querySelectorAll('input[type="checkbox"]:checked')).map(input => input.value);
+        const selectedMembers = Array.from(teamMembersContainer.querySelectorAll('input[type="checkbox"]:checked')).map(input => input.value);
+
+        Array.from(teamMembersContainer.querySelectorAll('input[type="checkbox"]')).forEach(input => {
+            input.disabled = selectedLeads.includes(input.value);
+        });
+
+        Array.from(teamLeadsContainer.querySelectorAll('input[type="checkbox"]')).forEach(input => {
+            input.disabled = selectedMembers.includes(input.value);
+        });
+    }
+
+    teamLeadsContainer.addEventListener('change', updateOptions);
+    teamMembersContainer.addEventListener('change', updateOptions);
+
+    updateOptions();
+</script>
+
 
 {% endblock %}

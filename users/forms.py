@@ -10,8 +10,54 @@ class SignUpForm(UserCreationForm):
         fields = ['email', 'first_name', 'last_name', 'password1', 'password2']
 
     def save(self, commit=True):
-        user = super().save(commit=False)  # Create user instance without saving
-        user.email = self.cleaned_data['email']  # Set email
+        user = super().save(commit=False)
+        user.email = self.cleaned_data['email']
         if commit:
-            user.save()  # Save the user instance if commit is True
+            user.save()
+        return user
+
+
+class AdminUpdateForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'email', 'permissions']
+
+
+class UpdateForm(forms.ModelForm):
+    password1 = forms.CharField(
+        label="New Password",
+        widget=forms.PasswordInput,
+        required=False
+    )
+
+    password2 = forms.CharField(
+        label="Confirm New Password",
+        widget=forms.PasswordInput,
+        required=False
+    )
+    
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'email', 'password1', 'password2']
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get("password1")
+        password2 = cleaned_data.get("password2")
+
+        if password1 or password2:
+            if password1 != password2:
+                raise forms.ValidationError("Passwords do not match.")
+        
+        return cleaned_data
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        password1 = self.cleaned_data.get('password1')
+
+        if password1:
+            user.set_password(password1)
+
+        if commit:
+            user.save()
         return user
