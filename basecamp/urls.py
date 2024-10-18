@@ -16,11 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from basecamp.views import HomeView
+from basecamp.views import HomeView, AccessForbiddenView
 
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
+    path('access_forbidden', AccessForbiddenView.as_view(), name='access_forbidden'),
     path('admin/', admin.site.urls),
     path('projects/', include('projects.urls')), 
     path('users/', include(('users.urls', 'users'), namespace='users')), 

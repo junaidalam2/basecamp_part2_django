@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.views import LoginView
 from django.db.models.query import QuerySet
 from django.urls import reverse_lazy
@@ -22,49 +23,71 @@ class SignUpView(FormView):
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
-        # Save the user and log them in
         user = form.save()
         login(self.request, user)
         return redirect(self.get_success_url())
 
 
-class AdminUserListView(ListView):
+class AdminUserListView(UserPassesTestMixin, ListView):
     model = User
     template_name = 'registration/user_list.html'
     context_object_name = 'users'
 
+    def test_func(self):
+        return self.request.user.is_superuser or self.request.user.permissions == 'admin'
+    
     def get_queryset(self):
         return User.objects.all()
 
+    def handle_no_permission(self):
+        return redirect('access_forbidden') 
 
-class AdminUserDetailView(DetailView):
+
+class AdminUserDetailView(UserPassesTestMixin, DetailView):
     template_name = 'registration/user_detail.html'
     queryset = User.objects.all()
 
+    def test_func(self):
+        return self.request.user.is_superuser or self.request.user.permissions == 'admin'
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.get_object()
 
+        context['user'] = user
         return context
+    
+    def handle_no_permission(self):
+        return redirect('access_forbidden') 
 
 
-class AdminUpdateView(UpdateView):
+class AdminUpdateView(UserPassesTestMixin, UpdateView):
     model = User
     template_name = 'registration/user_admin_update.html'
     form_class = AdminUpdateForm
     success_url = reverse_lazy('users:user-list')
 
+    def test_func(self):
+        return self.request.user.is_superuser or self.request.user.permissions == 'admin'
+    
     def form_valid(self, form):
-        user = form.save
-        return super().form_valid(form)  
+        user = form.save()
+        return super().form_valid(form)
+    
+    def handle_no_permission(self):
+        return redirect('access_forbidden') 
 
 
-class UserUpdateView(UpdateView):
+class UserUpdateView(UserPassesTestMixin, UpdateView):
     model = User
     template_name = 'registration/user_update.html'
     form_class = UpdateForm
     success_url = reverse_lazy('home')
 
+    def test_func(self):
+        user_to_update = self.get_object()
+        return self.request.user == user_to_update
+    
     def form_valid(self, form):
         user = form.save(commit=False)
 
@@ -75,3 +98,6 @@ class UserUpdateView(UpdateView):
         
         user.save()
         return redirect(self.get_success_url())
+    
+    def handle_no_permission(self):
+        return redirect('access_forbidden') 
