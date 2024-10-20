@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Messages for {{ project.name }}</h1>
+
+    {% if message_list %}
+        <table class="table table-striped table-bordered table-hover">
+            <tbody>
+                {% for message in message_list %}
+
+                    <tr>
+                        <td>Topic: {{ message.topic }}</td>
+                        <td>Created by: {{ message.created_by.get_full_name }}</td>
+                        <td>Created on: {{ message.time_created }}</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="3">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Message</th>
+                                        <th>Created by</th>
+                                        <th>Created on</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-group-divider">
+                                    {% if message.threads.exists %}
+                                        {% for thread in message.threads.all %}
+                                            <tr>
+                                                <td>{{ thread.message_text }}</td>
+                                                <td>{{ thread.created_by.get_full_name }}</td>
+                                                <td>{{ thread.time_created }}</td>
+                                                <td>Edit</td>
+                                                <td>Delete</td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="5">No threads for this message.</td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </td>
+
+
+                        <tr>
+                            <td colspan="3">
+                                <form method="post" action="{% url 'messageboards:thread-create' message.id %}">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="message_text">Reply to this message:</label>
+                                        <textarea name="message_text" class="form-control" rows="2" placeholder="Type your message here..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mt-2">Post Reply</button>
+                                </form>
+                            </td>
+                        </tr>
+
+                        
+                        <tr style="height: 40px;"></tr>
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No messages for this project.</p>
+    {% endif %}
+
+    <a href="{% url 'messageboards:message-create' project.pk %}">Create Message</a>
+
+{% endblock %}

@@ -1,8 +1,5 @@
 from django.db import models
 from users.models import CustomUser
-from django.utils import timezone
-
-# Create your models here.
 
 
 class Project(models.Model):

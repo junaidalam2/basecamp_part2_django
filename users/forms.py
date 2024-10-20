@@ -11,6 +11,7 @@ class SignUpForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
+        print('user', user)
         user.email = self.cleaned_data['email']
         if commit:
             user.save()

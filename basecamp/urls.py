@@ -24,5 +24,6 @@ urlpatterns = [
     path('access_forbidden', AccessForbiddenView.as_view(), name='access_forbidden'),
     path('admin/', admin.site.urls),
     path('projects/', include('projects.urls')), 
+    path('messageboards/', include('messageboards.urls')), 
     path('users/', include(('users.urls', 'users'), namespace='users')), 
 ]

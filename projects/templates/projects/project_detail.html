@@ -65,7 +65,8 @@
 {% endif %}
 
 
-<a href="{% url 'projects:projects-update' object.pk %}">Edit</a>
+<a href="{% url 'messageboards:project-messageboard-list' object.pk %}">Messageboard</a>
+<a href="{% url 'projects:projects-update' object.pk %}">Edit Project</a>
 <a href="{% url 'projects:projects-list' %}">Back to Project List</a>
 
 {% endblock %}
