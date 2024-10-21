@@ -8,61 +8,193 @@
             <tbody>
                 {% for message in message_list %}
 
-                    <tr>
+                    <tr id="message-row-{{ message.id }}">
                         <td>Topic: {{ message.topic }}</td>
                         <td>Created by: {{ message.created_by.get_full_name }}</td>
                         <td>Created on: {{ message.time_created }}</td>
+                        <td>
+                            Last updated by: 
+                            {% if message.last_updated_by %}
+                                {{ message.last_updated_by.get_full_name }}
+                            {% else %}
+                                {{ message.created_by.get_full_name }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            Last updated: 
+                            {% if message.time_updated %}
+                                {{ message.time_updated }}
+                            {% else %}
+                                --
+                            {% endif %}
+                        </td>
+                        <td data-toggle="tooltip" title="{{tooltip_text_team_lead}}">
+                            <button
+                                class="btn btn-warning btn" 
+                                onclick="editMessage({{ message.id }})"
+                                {% if not is_team_lead %}
+                                    disabled
+                                {% endif %}
+                            >Edit</button>
+                        </td>
+                        <td data-toggle="tooltip" title="{{tooltip_text_team_lead}}">
+                            <form method="post" action="{% url 'messageboards:message-delete' message.id %}" class="delete-form">
+                                {% csrf_token %}
+                                <button 
+                                    type="button" 
+                                    class="btn btn-danger delete-btn" 
+                                    data-delete="false"
+                                    {% if not is_team_lead %}
+                                        disabled
+                                    {% endif %}
+                                >Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+
+                    <!-- Hidden row for message edit form -->
+                    <tr id="edit-message-form-{{ message.id }}" style="display: none;">
+                        <td colspan="7">
+                            <form method="post" action="{% url 'messageboards:message-edit' message.id %}">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="message_topic_{{ message.id }}">Edit Topic</label>
+                                    <input type="text" name="topic" class="form-control" id="message_topic_{{ message.id }}" value="{{ message.topic }}">
+                                </div>
+                                <button 
+                                    type="submit" 
+                                    class="btn btn-success mt-2"
+                                    {% if not is_team_member %}
+                                        disabled
+                                    {% endif %} 
+                                >Save</button>
+                                <button 
+                                    type="button" 
+                                    class="btn btn-secondary mt-2" 
+                                    onclick="cancelEditMessage({{ message.id }})"
+                                    {% if not is_team_member %}
+                                        disabled
+                                    {% endif %}
+                                >Cancel</button>
+                            </form>
+                        </td>
                     </tr>
 
                     <tr>
-                        <td colspan="3">
+                        <td colspan="7">
                             <table class="table mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Message</th>
+                                        <th style="width: 40%;">Message</th>
                                         <th>Created by</th>
                                         <th>Created on</th>
-                                        <th>Edit</th>
-                                        <th>Delete</th>
+                                        <th>Last edited by</th>
+                                        <th>Lasted edited on</th>
+                                        <th data-toggle="tooltip" title="{{tooltip_text_team_member}}">Edit</th>
+                                        <th data-toggle="tooltip" title="{{tooltip_text_team_member}}">Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody class="table-group-divider">
                                     {% if message.threads.exists %}
                                         {% for thread in message.threads.all %}
-                                            <tr>
-                                                <td>{{ thread.message_text }}</td>
+                                            <tr id="thread-row-{{ thread.id }}">
+                                                <td style="width: 40%;">{{ thread.message_text }}</td>
                                                 <td>{{ thread.created_by.get_full_name }}</td>
                                                 <td>{{ thread.time_created }}</td>
-                                                <td>Edit</td>
-                                                <td>Delete</td>
+                                                <td>
+                                                    {% if thread.last_updated_by %}
+                                                        {{ thread.last_updated_by.get_full_name }}
+                                                    {% else %}
+                                                        {{ thread.created_by.get_full_name }}
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    {% if thread.time_updated %}
+                                                        {{ thread.time_updated }}
+                                                    {% else %}
+                                                        --
+                                                    {% endif %}
+                                                </td>
+                                                <td data-toggle="tooltip" title="{{tooltip_text_team_member}}">
+                                                    <button 
+                                                        class="btn btn-warning btn" 
+                                                        onclick="editThread({{ thread.id }})"
+                                                        {% if not is_team_member %}
+                                                            disabled
+                                                        {% endif %} 
+                                                    >Edit</button>
+                                                </td>
+
+                                                <td data-toggle="tooltip" title="{{tooltip_text_team_member}}">
+                                                    <form method="post" action="{% url 'messageboards:thread-delete' thread.id %}" class="delete-form">
+                                                        {% csrf_token %}
+                                                        <button 
+                                                            type="button" 
+                                                            class="btn btn-danger delete-btn" 
+                                                            data-delete="false"
+                                                            {% if not is_team_member %}
+                                                                disabled
+                                                            {% endif %} 
+                                                        >Delete</button>
+                                                    </form>
+                                                </td>
                                             </tr>
+
+                                             <!-- Hidden row for edit form -->
+                                            <tr id="edit-thread-form-{{ thread.id }}" style="display: none;">
+                                                <td colspan="7">
+                                                    <form method="post" action="{% url 'messageboards:thread-edit' thread.id %}">
+                                                        {% csrf_token %}
+                                                        <div class="form-group">
+                                                            <textarea name="message_text" class="form-control" placeholder="Edit your message...">{{ thread.message_text }}</textarea>
+                                                        </div>
+                                                        <button 
+                                                            type="submit" 
+                                                            class="btn btn-success mt-2"
+                                                            {% if not is_team_member %}
+                                                                disabled
+                                                            {% endif %} 
+                                                        >Save</button>
+                                                        <button 
+                                                            type="button" 
+                                                            class="btn btn-secondary mt-2" 
+                                                            onclick="cancelEdit({{ thread.id }})"
+                                                            {% if not is_team_member %}
+                                                                disabled
+                                                            {% endif %} 
+                                                        >Cancel</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            
                                         {% endfor %}
                                     {% else %}
                                         <tr>
-                                            <td colspan="5">No threads for this message.</td>
+                                            <td colspan="7">No threads for this message.</td>
                                         </tr>
                                     {% endif %}
                                 </tbody>
                             </table>
                         </td>
-
-
                         <tr>
-                            <td colspan="3">
+                            <td colspan="7">
                                 <form method="post" action="{% url 'messageboards:thread-create' message.id %}">
                                     {% csrf_token %}
-                                    <div class="form-group">
+                                    <div class="form-group" data-toggle="tooltip" title="{{tooltip_text_team_member}}">
                                         <label for="message_text">Reply to this message:</label>
                                         <textarea name="message_text" class="form-control" rows="2" placeholder="Type your message here..."></textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-primary mt-2">Post Reply</button>
+                                    <button 
+                                        type="submit" 
+                                        class="btn btn-primary mt-2"
+                                        {% if not is_team_member %}
+                                            disabled
+                                        {% endif %} 
+                                    >Post Reply</button>
                                 </form>
                             </td>
                         </tr>
-
-                        
                         <tr style="height: 40px;"></tr>
-
                     </tr>
                 {% endfor %}
             </tbody>
@@ -71,6 +203,91 @@
         <p>No messages for this project.</p>
     {% endif %}
 
-    <a href="{% url 'messageboards:message-create' project.pk %}">Create Message</a>
+    {% if is_team_lead %}
+        <a href="{% url 'messageboards:message-create' project.pk %}">Create Message</a>
+    {% endif %}
+
+
+<script>
+    
+    function editMessage(messageId) {
+        // Hide the normal row
+        document.getElementById('message-row-' + messageId).style.display = 'none';
+        // Show the edit form row
+        document.getElementById('edit-message-form-' + messageId).style.display = 'table-row';
+    }
+
+    function cancelEditMessage(messageId) {
+        // Show the normal row again
+        document.getElementById('message-row-' + messageId).style.display = 'table-row';
+        // Hide the edit form row
+        document.getElementById('edit-message-form-' + messageId).style.display = 'none';
+    }
+
+    function editThread(threadId) {
+        // Hide the normal row
+        document.getElementById('thread-row-' + threadId).style.display = 'none';
+        // Show the edit form row
+        document.getElementById('edit-thread-form-' + threadId).style.display = 'table-row';
+    }
+
+    function cancelEdit(threadId) {
+        // Show the normal row again
+        document.getElementById('thread-row-' + threadId).style.display = 'table-row';
+        // Hide the edit form row
+        document.getElementById('edit-thread-form-' + threadId).style.display = 'none';
+    }
+    
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        let activeButton = null;
+
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                event.stopPropagation();
+
+                // If another delete button clicked, reset existing delete button clicked
+                if (activeButton && activeButton !== button) {
+                activeButton.textContent = 'Delete';
+                activeButton.style.backgroundColor = '';  
+                activeButton.setAttribute('data-delete', 'false');
+            }
+
+                // Check if the button was clicked once or twice
+                if (button.getAttribute('data-delete') === 'false') {
+                    // First click - change text and background color
+                    button.textContent = 'Are you sure?';
+                    button.style.backgroundColor = 'black';
+                    button.setAttribute('data-delete', 'true');
+                    activeButton = button;
+                } else {
+                    // Second click - submit the form to delete the thread
+                    button.closest('form').submit();
+                }
+            });
+        });
+
+        document.addEventListener('click', function() {
+        if (activeButton) {
+            activeButton.textContent = 'Delete';
+            activeButton.style.backgroundColor = '';
+            activeButton.setAttribute('data-delete', 'false');
+            activeButton = null;
+            }
+         });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Bootstrap tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+
+</script>
+
 
 {% endblock %}

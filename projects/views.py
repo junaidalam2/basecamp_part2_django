@@ -1,4 +1,4 @@
-#from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from .models import Project, Membership
 from .forms import ProjectModelForm
@@ -80,9 +80,33 @@ class ProjectUpdateView(UpdateView):
             Membership.objects.create(user=member, project=project, role=Membership.TEAM_MEMBER)
 
         return super().form_valid(form)
+    
+    # def get_object(self, queryset=None):
+    #     project_id = self.kwargs.get('project_id')
+    #     return get_object_or_404(Project, id=project_id)
+
+    # def test_func(self):
+    #     project = self.get_object()
+    #     return project.is_team_member(self.request.user)
+    
+    # def handle_no_permission(self):
+    #     return redirect('access_forbidden') 
+
 
 
 class ProjectDeleteView(DeleteView):
     model = Project
     template_name = 'projects/project_delete.html'
     success_url = reverse_lazy('projects:projects-list')
+
+    # def get_object(self, queryset=None):
+    #     project_id = self.kwargs.get('project_id')
+    #     return get_object_or_404(Project, id=project_id)
+
+    # def test_func(self):
+    #     project = self.get_object()
+    #     return project.is_team_lead(self.request.user)
+    
+    # def handle_no_permission(self):
+    #     return redirect('access_forbidden') 
+

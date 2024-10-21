@@ -10,6 +10,7 @@ class Message(models.Model):
     created_by                  = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_messages')
     time_created                = models.DateTimeField(auto_now_add=True)
     time_updated                = models.DateTimeField(auto_now=True)
+    last_updated_by             = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='updated_messages')
 
     def __str__(self):
         return self.topic
@@ -21,6 +22,8 @@ class Thread(models.Model):
     created_by                  = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_threads')
     time_created                = models.DateTimeField(auto_now_add=True)
     time_updated                = models.DateTimeField(auto_now=True)
+    last_updated_by             = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='updated_threads')
+
 
     def __str__(self):
         return f'Thread in "{self.message.topic}" - {self.message_text[:30]}...'

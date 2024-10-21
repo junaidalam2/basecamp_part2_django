@@ -25,13 +25,19 @@ class Project(models.Model):
         choices = STATUS_CHOICES,
         default = ACTIVE,
     )
+
+    
+    def is_team_member(self, user):
+        return self.membership_set.filter(user=user, role__in=['Team Member', 'Team Lead']).exists()
+
+    
+    def is_team_lead(self, user):
+        return self.membership_set.filter(user=user, role=Membership.TEAM_LEAD).exists()
     
     def __str__(self):
         return self.name
     
 
-
-    
 class Membership(models.Model):
     TEAM_MEMBER = 'Team Member'
     TEAM_LEAD = 'Team Lead'
