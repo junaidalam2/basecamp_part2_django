@@ -53,3 +53,13 @@ class Membership(models.Model):
 
     def __str__(self):
         return f"{self.user.email} - {self.role} in {self.project.name}"
+    
+
+
+class FileUpload(models.Model):
+    project = models.ForeignKey(Project, related_name='uploaded_files', on_delete=models.CASCADE)
+    file = models.FileField(upload_to='project_files/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.file.name} uploaded for {self.project.name}"

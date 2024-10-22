@@ -206,7 +206,8 @@
     {% if is_team_lead %}
         <a href="{% url 'messageboards:message-create' project.pk %}">Create Message</a>
     {% endif %}
-
+    
+    <a href="{% url 'projects:projects-detail' project.pk %}">View Project</a>
 
 <script>
     

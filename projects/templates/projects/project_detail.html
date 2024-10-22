@@ -41,6 +41,17 @@
 {% endif %}
 
 
+<h3>Uploaded Files:</h3>
+<ul>
+    {% for file in file_uploads %}
+        <li><a href="{{ file.file.url }}">{{ file.file.name }}</a></li>
+    {% empty %}
+        <li>No files uploaded yet.</li>
+    {% endfor %}
+</ul>
+
+
+
 <h3>Team Leads</h3>
 {% if team_leads %}
     <ul>

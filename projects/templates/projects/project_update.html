@@ -35,10 +35,61 @@
     <input type='submit' value='Save Changes' />
 </form>
 
+<h3>Uploaded Files:</h3>
+<ul>
+    {% for file in file_uploads %}
+        <li>
+            <a href="{{ file.file.url }}">{{ file.file.name }}</a>
+            <form action="{% url 'projects:file_upload_delete' file.pk %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="button" class="delete-button" data-file-id="{{ file.pk }}">Delete</button>
+                <input type="hidden" name="confirm" value="0">
+            </form>
+        </li>
+    {% empty %}
+        <li>No files uploaded yet.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'projects:upload_file' project.pk %}">Upload Files</a>
+
 <a href="{% url 'projects:projects-list' %}">Back to Project List</a>
 
 
 <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+        const deleteButtons = document.querySelectorAll('.delete-button');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Check if button is already in "Are you sure?" state
+                if (this.textContent === 'Delete') {
+                    this.textContent = 'Are you sure?';
+                } else {
+                    // Proceed with the delete action
+                    this.closest('form').submit();
+                }
+
+                // Reset all other delete buttons
+                deleteButtons.forEach(btn => {
+                    if (btn !== this && btn.textContent === 'Are you sure?') {
+                        btn.textContent = 'Delete';
+                    }
+                });
+            });
+        });
+
+        // Reset button text when clicking anywhere else
+        document.addEventListener('click', function(event) {
+            deleteButtons.forEach(button => {
+                if (button.textContent === 'Are you sure?' && !button.contains(event.target)) {
+                    button.textContent = 'Delete';
+                }
+            });
+        });
+    });
+    
     const teamLeadsContainer = document.getElementById('team_leads_container');
     const teamMembersContainer = document.getElementById('team_members_container');
 

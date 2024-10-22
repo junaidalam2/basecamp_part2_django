@@ -1,5 +1,5 @@
 from django import forms
-from .models import Project, CustomUser
+from .models import Project, CustomUser, FileUpload
 from django.core.exceptions import ValidationError
 
 class ProjectModelForm(forms.ModelForm):
@@ -50,3 +50,9 @@ class ProjectModelForm(forms.ModelForm):
                     raise ValidationError('A user cannot be both a Team Lead and a Team Member.')
 
             return cleaned_data
+
+
+class FileUploadForm(forms.ModelForm):
+    class Meta:
+        model = FileUpload
+        fields = ['file']

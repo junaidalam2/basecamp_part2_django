@@ -1,0 +1,9 @@
+<h1>Upload a file for {{ project.name }}</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Upload</button>
+</form>
+
+<a href="{% url 'projects:projects-update' project.pk %}">Back to Edit Project</a>
