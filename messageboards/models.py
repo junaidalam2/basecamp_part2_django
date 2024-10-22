@@ -8,7 +8,7 @@ class Message(models.Model):
     project                     = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='messages')
     topic                       = models.CharField(max_length=255) 
     created_by                  = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_messages')
-    time_created                = models.DateTimeField(auto_now_add=True)
+    time_created                = models.DateTimeField(auto_now_add=True, blank=False, null=False)
     time_updated                = models.DateTimeField(auto_now=True)
     last_updated_by             = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='updated_messages')
 
@@ -20,7 +20,7 @@ class Thread(models.Model):
     message                     = models.ForeignKey(Message, on_delete=models.CASCADE, related_name='threads')
     message_text                = models.TextField() 
     created_by                  = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_threads')
-    time_created                = models.DateTimeField(auto_now_add=True)
+    time_created                = models.DateTimeField(auto_now_add=True, blank=False, null=False)
     time_updated                = models.DateTimeField(auto_now=True)
     last_updated_by             = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='updated_threads')
 

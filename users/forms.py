@@ -9,6 +9,12 @@ class SignUpForm(UserCreationForm):
         model = CustomUser
         fields = ['email', 'first_name', 'last_name', 'password1', 'password2']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            if field.required:
+                field.label += ' *'
+    
     def save(self, commit=True):
         user = super().save(commit=False)
         print('user', user)
@@ -22,6 +28,12 @@ class AdminUpdateForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['first_name', 'last_name', 'email', 'permissions']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            if field.required:
+                field.label += ' *'
 
 
 class UpdateForm(forms.ModelForm):
@@ -41,6 +53,12 @@ class UpdateForm(forms.ModelForm):
         model = CustomUser
         fields = ['first_name', 'last_name', 'email', 'password1', 'password2']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            if field.required:
+                field.label += ' *'
+    
     def clean(self):
         cleaned_data = super().clean()
         password1 = cleaned_data.get("password1")

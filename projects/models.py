@@ -3,11 +3,11 @@ from users.models import CustomUser
 
 
 class Project(models.Model):
-    name                        = models.CharField(max_length=255) 
-    description                 = models.TextField()
-    time_frame_for_completion   = models.DateField()
-    time_created                = models.DateTimeField(auto_now_add=True)
-    time_updated = models.DateTimeField(auto_now=True)
+    name                        = models.CharField(max_length=255, blank=False, null=False) 
+    description                 = models.TextField(blank=False, null=False)
+    time_frame_for_completion   = models.DateField(blank=False, null=False)
+    time_created                = models.DateTimeField(auto_now_add=True, blank=False, null=False)
+    time_updated = models.DateTimeField(auto_now=True, blank=False, null=False)
     users = models.ManyToManyField(CustomUser, related_name='projects', through='Membership')
 
     ACTIVE = 'A'
@@ -49,7 +49,7 @@ class Membership(models.Model):
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default=TEAM_MEMBER)
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default=TEAM_MEMBER, blank=False, null=False)
 
     def __str__(self):
         return f"{self.user.email} - {self.role} in {self.project.name}"

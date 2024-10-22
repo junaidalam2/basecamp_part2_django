@@ -66,7 +66,25 @@
 
 
 <a href="{% url 'messageboards:project-messageboard-list' object.pk %}">Messageboard</a>
-<a href="{% url 'projects:projects-update' object.pk %}">Edit Project</a>
+{% if is_team_member or is_superuser %}
+    <a href="{% url 'projects:projects-update' object.pk %}">Edit Project</a>
+{% else %}
+    <a href="#" style="color: gray;" data-toggle="tooltip" title="Must be a project team member to edit">Edit Project</a>
+{% endif %}
 <a href="{% url 'projects:projects-list' %}">Back to Project List</a>
+
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Bootstrap tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+
+</script>
+
 
 {% endblock %}

@@ -29,6 +29,13 @@ class ProjectModelForm(forms.ModelForm):
         fields = ['name', 'description', 'time_frame_for_completion', 'status']
 
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            if field.required:
+                field.label += ' *'
+
+
     def clean(self):
             cleaned_data = super().clean()
             team_leads = cleaned_data.get('team_leads')

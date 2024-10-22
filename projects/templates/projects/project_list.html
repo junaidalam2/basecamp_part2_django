@@ -6,13 +6,37 @@
 
         <h1>Project List</h1>
         <ul>
-            {% for project in object_list %}
+            {% for project, is_team_member, is_team_lead in user_projects %}
                 <li>{{ project.name }}</li>
                 <a href="{% url 'projects:projects-detail' project.pk %}">View</a>
-                <a href="{% url 'projects:projects-update' project.pk %}">Edit</a>
-                <a href="{% url 'projects:projects-delete' project.pk %}">Delete</a>
+                
+                {% if is_team_member or is_superuser %}
+                    <a href="{% url 'projects:projects-update' project.pk %}">Edit</a>
+                {% else %}
+                    <a href="#" style="color: gray;" data-toggle="tooltip" title="Must be project team member to edit">Edit</a>
+                {% endif %}
+                
+                {% if is_team_lead or is_superuser %}
+                    <a href="{% url 'projects:projects-delete' project.pk %}">Delete</a>
+                {% else %}
+                    <a href="#" style="color: gray;" data-toggle="tooltip" title="Must be project team lead to delete">Delete</a>
+                {% endif %}
+            
             {% endfor %}
         </ul>
 
         <a href="{% url 'projects:projects-create' %}">Create New Project</a>
+
+<script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Bootstrap tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+
+</script>
+
 {% endblock %}

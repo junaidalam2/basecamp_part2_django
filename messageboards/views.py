@@ -58,8 +58,10 @@ class MessageboardListView(ListView):
         context['thread_form'] = ThreadForm()
         context['is_team_member'] = project.is_team_member(self.request.user)
         context['is_team_lead'] = project.is_team_lead(self.request.user)
+        context['is_superuser'] = self.request.user.is_superuser
         context['tooltip_text_team_lead'] = "Topics can only be created, edited and deleted by Team Leads."
         context['tooltip_text_team_member'] = "Messages can only be created, edited and deleted by members of the project team."
+        
         return context
     
 

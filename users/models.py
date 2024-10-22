@@ -39,10 +39,12 @@ class CustomUser(AbstractUser):
     ]
 
     username = None  # Disable username
-    email = models.EmailField(_("email address"), max_length=100, unique=True)
-    date_joined = models.DateTimeField(verbose_name="date joined", auto_now_add=True)
+    email = models.EmailField(_("email address"), max_length=100, unique=True, blank=False, null=False)
+    date_joined = models.DateTimeField(verbose_name="date joined", auto_now_add=True, blank=False, null=False)
     max_permissions_length = max(len(PERMISSIONS_USER), len(PERMISSIONS_ADMIN))
-    permissions = models.CharField(choices=USER_PERMISSIONS, default=PERMISSIONS_USER, max_length = max_permissions_length)
+    permissions = models.CharField(choices=USER_PERMISSIONS, default=PERMISSIONS_USER, max_length = max_permissions_length, blank=False, null=False)
+    first_name = models.CharField(max_length=50, blank=False, null=False)
+    last_name = models.CharField(max_length=50, blank=False, null=False)
 
     USERNAME_FIELD = "email"  # Set email as the username field
     REQUIRED_FIELDS = ['first_name', 'last_name']  # Fields required on superuser creation

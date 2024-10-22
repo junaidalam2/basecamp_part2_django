@@ -37,6 +37,21 @@ class ProjectListView(ListView):
     template_name = 'projects/project_list.html'
     queryset = Project.objects.all()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        projects = self.get_queryset()
+        user_projects = []
+
+        for project in projects:
+            is_team_member = project.is_team_member(self.request.user)
+            is_team_lead = project.is_team_lead(self.request.user)
+            user_projects.append((project, is_team_member, is_team_lead))
+
+        context['user_projects'] = user_projects
+        context['is_superuser'] = self.request.user.is_superuser
+        
+        return context
+
 
 class ProjectDetailView(DetailView):
     template_name = 'projects/project_detail.html'
@@ -48,7 +63,9 @@ class ProjectDetailView(DetailView):
 
         context['team_leads'] = project.membership_set.filter(role=Membership.TEAM_LEAD)
         context['team_members'] = project.membership_set.filter(role=Membership.TEAM_MEMBER)
-        
+        context['is_team_member'] = project.is_team_member(self.request.user)
+        context['is_superuser'] = self.request.user.is_superuser
+
         return context
 
 
@@ -81,32 +98,8 @@ class ProjectUpdateView(UpdateView):
 
         return super().form_valid(form)
     
-    # def get_object(self, queryset=None):
-    #     project_id = self.kwargs.get('project_id')
-    #     return get_object_or_404(Project, id=project_id)
-
-    # def test_func(self):
-    #     project = self.get_object()
-    #     return project.is_team_member(self.request.user)
-    
-    # def handle_no_permission(self):
-    #     return redirect('access_forbidden') 
-
-
 
 class ProjectDeleteView(DeleteView):
     model = Project
     template_name = 'projects/project_delete.html'
     success_url = reverse_lazy('projects:projects-list')
-
-    # def get_object(self, queryset=None):
-    #     project_id = self.kwargs.get('project_id')
-    #     return get_object_or_404(Project, id=project_id)
-
-    # def test_func(self):
-    #     project = self.get_object()
-    #     return project.is_team_lead(self.request.user)
-    
-    # def handle_no_permission(self):
-    #     return redirect('access_forbidden') 
-
