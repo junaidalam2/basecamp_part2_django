@@ -2,6 +2,27 @@
 
 {% block content %}
 
-    <h1>Hello world</h1>
-    <p>This is a template - this is working!</p>
+<br>
+<br>
+<center>
+    <h1 style="color:#50545c;">
+        <b>Welcome to MyBasecamp!</b>
+    </h1>
+    <span class="material-symbols-outlined" style="font-size: 20em; color:#0d6efd;">
+        landscape
+    </span>
+    <br>
+
+    <h5>
+        {% if user.is_authenticated %}
+            {{user.first_name}}, you're signed in!
+        {% else %}
+            <div style="display: flex; justify-content: center; gap: 20px;">
+                <a class="btn btn-secondary" aria-current="page" href="{% url 'users:login' %}">Login</a>
+                <a class="btn btn-secondary" aria-current="page" href="{% url 'users:signup' %}">Sign Up</a>
+            </div>
+        {% endif %}
+    </h5>
+</center>
+
 {% endblock %}

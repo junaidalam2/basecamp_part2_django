@@ -1,6 +1,8 @@
-<nav class="navbar bg-primary navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+<nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
   <div class="container-fluid">
-      <a class="navbar-brand" href="{% url 'home' %}">Home</a>
+      <a class="navbar-brand" href="{% url 'home' %}">
+        <span class="material-symbols-outlined" style="font-size: 2em;">landscape</span>
+      </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
       </button>
@@ -19,23 +21,32 @@
           </ul>
           <ul class="navbar-nav ms-auto">
               <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Dropdown
-                  </a>
-                  <ul class="dropdown-menu">
-                      {% if user.is_authenticated %}
-                          <li>
-                            <a href="#" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                            <form id="logout-form" method="POST" action="{% url 'users:logout' %}" style="display:none;">
-                                {% csrf_token %}
-                            </form>
-                        </li>
-                          <li><a class="dropdown-item" href="{% url 'users:user-update' request.user.pk %}">Profile</a></li>
-                      {% else %}
-                          <li><a class="dropdown-item" href="{% url 'users:login' %}">Login</a></li>
-                          <li><a class="dropdown-item" href="{% url 'users:signup' %}">Sign Up</a></li>
-                      {% endif %}
-                  </ul>
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {% if user.is_authenticated %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-check" viewBox="0 0 16 16">
+                                <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514ZM11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
+                                <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"/>
+                            </svg>
+                        {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
+                            </svg>
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        {% if user.is_authenticated %}
+                            <li>
+                                <a href="#" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                                <form id="logout-form" method="POST" action="{% url 'users:logout' %}" style="display:none;">
+                                    {% csrf_token %}
+                                </form>
+                            </li>
+                            <li><a class="dropdown-item" href="{% url 'users:user-update' request.user.pk %}">Profile</a></li>
+                        {% else %}
+                            <li><a class="dropdown-item" href="{% url 'users:login' %}">Login</a></li>
+                            <li><a class="dropdown-item" href="{% url 'users:signup' %}">Sign Up</a></li>
+                        {% endif %}
+                    </ul>
               </li>
           </ul>
       </div>

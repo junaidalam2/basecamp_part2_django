@@ -1,6 +1,5 @@
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.views import LoginView
-from django.db.models.query import QuerySet
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib.auth import login, get_user_model, update_session_auth_hash
