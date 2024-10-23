@@ -3,13 +3,24 @@
 
 {% block content %}
 
-<h2>Update Project</h2>
+<br>
+<h2>UPDATE PROJECT</h2>
 
 <form action='.' method='POST'>
     {% csrf_token %}
+
+    <div class="form-floating mb-3">
+        {% if form.name.value %}
+          <input type="text" class="form-control" id="id_name" value="{{ form.name.value }}">
+        {% else %}
+        <label for="id_name">{{ form.name.label_tag }}</label>
+          <input type="text" class="form-control" id="id_name" placeholder="Enter Project Name">
+        {% endif %}
+            <div class="invalid-feedback">
+                {{ form.name.errors }}
+            </div>
+    </div>
     
-    <label for="id_name">{{ form.name.label_tag }}</label>
-    {{ form.name }} {{ form.name.errors }}
 
     <label for="id_description">{{ form.description.label_tag }}</label>
     {{ form.description }} {{ form.description.errors }}

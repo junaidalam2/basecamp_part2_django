@@ -3,92 +3,119 @@
 
 {% block content %}
 
-<h1>Project Name: {{object.name}}</h1>
+<br>
 
-{% if object.description %}
-<h3>Project Description</h3>
-<p>{{object.description}}</p>
-{% else %}
-<p>Description Coming Soon</p>
-{% endif %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="card text-white mb-3" style="max-width: 50rem; background-color: #363641;">
+        <div class="card-header">
+            <span class="badge rounded-pill text-bg-primary" style="font-size: 2rem;">{{object.name}}</span>
+        </div>
+        <div class="card-body">
+            <span class="badge rounded-pill text-bg-secondary" style="font-size: 1rem;">Project Description</span>
+            <div class="ms-3">
+                {% if object.description %}
+                    <p>{{object.description}}</p>
+                {% else %}
+                    <p>Description Coming Soon</p>
+                {% endif %}
+            </div>
 
-{% if object.time_frame_for_completion %}
-<h3>Time Frame for Completion</h3>
-<p>{{object.time_frame_for_completion}}</p>
-{% else %}
-<p>Time frame coming soon</p>
-{% endif %}
+            <span class="badge rounded-pill text-bg-secondary" style="font-size: 1rem;">Time Frame for Completion</span>
+            <div class="ms-3">
+                {% if object.time_frame_for_completion %}
+                    <p>{{object.time_frame_for_completion}}</p>
+                {% else %}
+                    <p>Time frame coming soon</p>
+                {% endif %}
+            </div>
 
-{% if object.status %}
-<h3>Status</h3>
-<p>{{object.get_status_display}}</p>
-{% else %}
-<p>Status coming soon</p>
-{% endif %}
+            <span class="badge rounded-pill text-bg-secondary" style="font-size: 1rem;">Status</span>
+            <div class="ms-3">
+                {% if object.status %}
+                    <p>{{object.get_status_display}}</p>
+                {% else %}
+                    <p>Status coming soon</p>
+                {% endif %}
+            </div>
 
-{% if object.time_created %}
-<h3>Time Created</h3>
-<p>{{object.time_created}}</p>
-{% else %}
-<p>Time created coming soon</p>
-{% endif %}
-
-{% if object.time_updated %}
-<h3>Last Updated</h3>
-<p>{{object.time_updated}}</p>
-{% else %}
-<p>Time updated coming soon</p>
-{% endif %}
-
-
-<h3>Uploaded Files:</h3>
-<ul>
-    {% for file in file_uploads %}
-        <li><a href="{{ file.file.url }}">{{ file.file.name }}</a></li>
-    {% empty %}
-        <li>No files uploaded yet.</li>
-    {% endfor %}
-</ul>
+            <span class="badge rounded-pill text-bg-secondary" style="font-size: 1rem;">Time Created</span>
+            <div class="ms-3">
+                {% if object.time_created %}
+                    <p>{{object.time_created}}</p>
+                {% else %}
+                    <p>Time created coming soon</p>
+                {% endif %}
+            </div>
 
 
-
-<h3>Team Leads</h3>
-{% if team_leads %}
-    <ul>
-        {% for lead in team_leads %}
-        <li>{{ lead.user.get_full_name }} ({{ lead.user.email }})</li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No team leads assigned yet.</p>
-{% endif %}
+            <span class="badge rounded-pill text-bg-secondary" style="font-size: 1rem;">Last Updated</span>
+            <div class="ms-3">
+                {% if object.time_updated %}
+                    <p>{{object.time_updated}}</p>
+                {% else %}
+                    <p>Time updated coming soon</p>
+                {% endif %}
+            </div>
 
 
-<h3>Team Members</h3>
-{% if team_members %}
-    <ul>
-        {% for member in team_members %}
-        <li>{{ member.user.get_full_name }} ({{ member.user.email }})</li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No team members assigned yet.</p>
-{% endif %}
+
+            <span class="badge rounded-pill text-bg-secondary" style="font-size: 1rem;">Uploaded Files</span>
+            <div class="ms-3">
+                {% if file_uploads %}
+                <ul>
+                    {% for file in file_uploads %}
+                        <li><a href="{{ file.file.url }}">{{ file.file.name }}</a></li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                    <p>No files uploaded yet.</p>
+                {% endif %}
+            </div>
 
 
-<a href="{% url 'messageboards:project-messageboard-list' object.pk %}">Messageboard</a>
-{% if is_team_member or is_superuser %}
-    <a href="{% url 'projects:projects-update' object.pk %}">Edit Project</a>
-{% else %}
-    <a href="#" style="color: gray;" data-toggle="tooltip" title="Must be a project team member to edit">Edit Project</a>
-{% endif %}
-<a href="{% url 'projects:projects-list' %}">Back to Project List</a>
+            <span class="badge rounded-pill text-bg-secondary" style="font-size: 1rem;">Team Leads</span>
+            <div class="ms-3">
+                {% if team_leads %}
+                <ul>
+                    {% for lead in team_leads %}
+                    <li>{{ lead.user.get_full_name }} ({{ lead.user.email }})</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                    <p>No team leads assigned yet.</p>
+                {% endif %}
+            </div>
 
+            <span class="badge rounded-pill text-bg-secondary" style="font-size: 1rem;">Team Members</span>
+            <div class="ms-3">
+                {% if team_members %}
+                    <ul>
+                        {% for member in team_members %}
+                        <li>{{ member.user.get_full_name }} ({{ member.user.email }})</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No team members assigned yet.</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="text-center">
+            <a class="btn btn-primary" href="{% url 'messageboards:project-messageboard-list' object.pk %}">Messageboard</a>
+            {% if is_team_member or is_superuser %}
+                <a class="btn btn-primary" href="{% url 'projects:projects-update' object.pk %}">Edit Project</a>
+            {% else %}
+                <a class="btn btn-primary" href="#" style="color: gray;" data-toggle="tooltip" title="Must be a project team member to edit">Edit Project</a>
+            {% endif %}
+            <a class="btn btn-primary" href="{% url 'projects:projects-list' %}">Back to Project List</a>
+        </div>
+        <div class="mt-3"></div>
+    </div>
+</div>
 
 <script>
 
     document.addEventListener('DOMContentLoaded', function() {
-        // Initialize Bootstrap tooltips
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
