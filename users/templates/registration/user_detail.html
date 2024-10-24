@@ -4,10 +4,43 @@
 {% block content %}
 
 
-<h1>{{object.name}}</h1>
-<ul>
-        <li>{{ object.first_name }} {{ object.last_name }}, {{ object.email }}, {{ object.permissions }}, {{ object.date_joined }}</li>
-</ul>
+<br>
+<br>
+<div class="container">
+        <div class="row justify-content-center">
+                <div class="col-md-6">
+                        <div class="card shadow" style="width: 40rem; background-color: #e5eef7;">
+                                <div class="card-body">
+                                        <br>
+                                        <div class="card text-white" style="width: 37.8rem; background-color: #2872fa;">
+                                            <div class="card-body text-center">
+                                              <h2 class="card-title">{{ object.first_name }} {{ object.last_name }}</h2>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <b>Project Description</b>
+                                        <div class="ms-3">
+                                                {{ object.email }}
+                                        </div>
+                                        <br>
+                                        <b>Permissions</b>
+                                        <div class="ms-3">
+                                                {{ object.permissions }}
+                                        </div>
+                                        <br>
+                                        <b>Date Joined</b>
+                                        <div class="ms-3">
+                                                {{ object.date_joined }}
+                                        </div>
 
+                                        <br>
+                                        <a class="btn btn-primary" href="{% url 'users:user-admin-update' user.pk %}">Edit User</a>
+                                </div>
+                        </div>
+                </div>
+        </div>
+        <br>
+        <br>
+</div>
 
 {% endblock %}
