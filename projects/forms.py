@@ -27,6 +27,12 @@ class ProjectModelForm(forms.ModelForm):
     class Meta:
         model = Project
         fields = ['name', 'description', 'time_frame_for_completion', 'status']
+        # to enable floating labels in bootstrap
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'id': 'id_name'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'id': 'id_description', 'rows': 4}),
+            'time_frame_for_completion': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'id': 'id_time_frame_for_completion'}),
+        }
 
 
     def __init__(self, *args, **kwargs):
@@ -56,3 +62,6 @@ class FileUploadForm(forms.ModelForm):
     class Meta:
         model = FileUpload
         fields = ['file']
+        widgets = {
+            'file': forms.ClearableFileInput(attrs={'class': 'form-control', 'id': 'inputGroupFile04'}),
+        }

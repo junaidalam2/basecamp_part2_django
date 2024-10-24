@@ -1,71 +1,105 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
 
 <br>
-<h2>UPDATE PROJECT</h2>
-
-<form action='.' method='POST'>
-    {% csrf_token %}
-
-    <div class="form-floating mb-3">
-        {% if form.name.value %}
-          <input type="text" class="form-control" id="id_name" value="{{ form.name.value }}">
-        {% else %}
-        <label for="id_name">{{ form.name.label_tag }}</label>
-          <input type="text" class="form-control" id="id_name" placeholder="Enter Project Name">
-        {% endif %}
-            <div class="invalid-feedback">
-                {{ form.name.errors }}
+<br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow" style="width: 40rem; background-color: #e5eef7;">
+                <div class="card-body">
+                    <form action='.' method='POST'>
+                        {% csrf_token %}
+                        <br>
+                        <h2>UPDATE PROJECT</h2>
+                        <div class="form-floating mb-3">
+                            {{ form.name }}
+                            <label for="id_name">{{ form.name.label }}</label>
+                        
+                            {% if form.name.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.name.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{ form.description }}
+                            <label for="id_description">{{ form.description.label }}</label>
+                        
+                            {% if form.description.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.description.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-floating mb-3">
+                                {{ form.time_frame_for_completion }}
+                                <label for="time_frame_for_completion">{{ form.time_frame_for_completion.label }}</label>
+                            
+                                {% if form.time_frame_for_completion.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.time_frame_for_completion.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-auto">
+                                <label for="id_status" class="col-form-label"><b>{{ form.status.label }}</b></label>
+                            </div>
+                            <div class="col">
+                                {{ form.status }}
+                                {% if form.status.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.status.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <h3>Team Structure</h3>
+                            <div class="col-auto">
+                                <label for="id_team_leads"><b>{{ form.team_leads.label_tag }}</b></label>
+                                <div id="team_leads_container">
+                                    {{ form.team_leads }} {{ form.team_leads.errors }}
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label for="id_team_members"><b>{{ form.team_members.label_tag }}</b></label>
+                                <div id="team_members_container">
+                                    {{ form.team_members }} {{ form.team_members.errors }}
+                                </div>
+                            </div>
+                        </div>
+                        <input class="btn btn-primary" type='submit' value='Save Changes' />
+                    </form>
+                    <br>
+                    <h3>Uploaded Files:</h3>
+                    <ul>
+                        {% for file in file_uploads %}
+                            <li>
+                                <a href="{{ file.file.url }}">{{ file.file.name }}</a>
+                                <form action="{% url 'projects:file_upload_delete' file.pk %}" method="POST" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="button" class="delete-button btn btn-danger" data-file-id="{{ file.pk }}">Delete</button>
+                                    <input type="hidden" name="confirm" value="0">
+                                </form>
+                            </li>
+                        {% empty %}
+                            <li>No files uploaded yet.</li>
+                        {% endfor %}
+                    </ul>
+                    <a class="btn btn-secondary" href="{% url 'projects:upload_file' project.pk %}">Upload Files</a>
+                    <a class="btn btn-secondary" href="{% url 'projects:projects-list' %}">Back to Project List</a>
+                </div>
             </div>
+        </div>
     </div>
-    
-
-    <label for="id_description">{{ form.description.label_tag }}</label>
-    {{ form.description }} {{ form.description.errors }}
-
-    <label for="id_time_frame_for_completion">{{ form.time_frame_for_completion.label_tag }}</label>
-    {{ form.time_frame_for_completion }} {{ form.time_frame_for_completion.errors }}
-
-    <label for="id_status">{{ form.status.label_tag }}</label>
-    {{ form.status }} {{ form.status.errors }}
-
-    <h3>Assign Team Leads</h3>
-    <label for="id_team_leads">{{ form.team_leads.label_tag }}</label>
-    <div id="team_leads_container">
-        {{ form.team_leads }} {{ form.team_leads.errors }}
-    </div>
-
-    <h3>Assign Team Members</h3>
-    <label for="id_team_members">{{ form.team_members.label_tag }}</label>
-    <div id="team_members_container">
-        {{ form.team_members }} {{ form.team_members.errors }}
-    </div>
-
-    <input type='submit' value='Save Changes' />
-</form>
-
-<h3>Uploaded Files:</h3>
-<ul>
-    {% for file in file_uploads %}
-        <li>
-            <a href="{{ file.file.url }}">{{ file.file.name }}</a>
-            <form action="{% url 'projects:file_upload_delete' file.pk %}" method="POST" style="display:inline;">
-                {% csrf_token %}
-                <button type="button" class="delete-button" data-file-id="{{ file.pk }}">Delete</button>
-                <input type="hidden" name="confirm" value="0">
-            </form>
-        </li>
-    {% empty %}
-        <li>No files uploaded yet.</li>
-    {% endfor %}
-</ul>
-
-<a href="{% url 'projects:upload_file' project.pk %}">Upload Files</a>
-
-<a href="{% url 'projects:projects-list' %}">Back to Project List</a>
-
+    <br>
+    <br>
+</div>
 
 <script>
 
@@ -74,28 +108,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
         deleteButtons.forEach(button => {
             button.addEventListener('click', function() {
-                // Check if button is already in "Are you sure?" state
                 if (this.textContent === 'Delete') {
-                    this.textContent = 'Are you sure?';
-                } else {
-                    // Proceed with the delete action
+                this.textContent = 'Are you sure?';
+                this.classList.remove('btn-danger');
+                this.classList.add('btn-dark');
+            } else {
                     this.closest('form').submit();
                 }
 
-                // Reset all other delete buttons
                 deleteButtons.forEach(btn => {
                     if (btn !== this && btn.textContent === 'Are you sure?') {
                         btn.textContent = 'Delete';
+                        btn.classList.remove('btn-dark');
+                    btn.classList.add('btn-danger');
                     }
                 });
             });
         });
 
-        // Reset button text when clicking anywhere else
         document.addEventListener('click', function(event) {
             deleteButtons.forEach(button => {
                 if (button.textContent === 'Are you sure?' && !button.contains(event.target)) {
                     button.textContent = 'Delete';
+                    button.classList.remove('btn-dark');
+                    button.classList.add('btn-danger');
                 }
             });
         });

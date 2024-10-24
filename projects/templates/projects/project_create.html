@@ -3,40 +3,89 @@
 
 {% block content %}
 
-<form action='.' method='POST'>
-    {% csrf_token %}
+<br>
+<br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow" style="width: 40rem; background-color: #e5eef7;">
+                <div class="card-body">
+                    <form action='.' method='POST'>
+                        {% csrf_token %}
+                        <br>
+                        <h2>CREATE NEW PROJECT</h2>
+                        <div class="form-floating mb-3">
+                            {{ form.name }}
+                            <label for="id_name">{{ form.name.label }}</label>
+                        
+                            {% if form.name.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.name.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="form-floating mb-3">
+                            {{ form.description }}
+                            <label for="id_description">{{ form.description.label }}</label>
+                        
+                            {% if form.description.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.description.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-floating mb-3">
+                                {{ form.time_frame_for_completion }}
+                                <label for="time_frame_for_completion">{{ form.time_frame_for_completion.label }}</label>
+                            
+                                {% if form.time_frame_for_completion.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.time_frame_for_completion.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-auto">
+                                <label for="id_status" class="col-form-label"><b>{{ form.status.label }}</b></label>
+                            </div>
+                            <div class="col">
+                                {{ form.status }}
+                                {% if form.status.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.status.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <h3>Team Structure</h3>
+                            <div class="col-auto">
+                                <label for="id_team_leads"><b>{{ form.team_leads.label_tag }}</b></label>
+                                <div id="team_leads_container">
+                                    {{ form.team_leads }} {{ form.team_leads.errors }}
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label for="id_team_members"><b>{{ form.team_members.label_tag }}</b></label>
+                                <div id="team_members_container">
+                                    {{ form.team_members }} {{ form.team_members.errors }}
+                                </div>
+                            </div>
+                        </div>
+                        <input class="btn btn-primary" type='submit' value='Create New Project' />
+                    </form>
+                    <br>
+                    <a class="btn btn-secondary" href="{% url 'projects:projects-list' %}">To Project List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+</div>
     
-    <label for="id_name"> {{ form.name.label_tag }} </label>
-    {{ form.name }} {{ form.name.errors }}
-
-    <label for="id_description">{{ form.description.label_tag }}</label>
-    {{ form.description }} {{ form.description.errors }}
-
-    <label for="id_time_frame_for_completion">{{ form.time_frame_for_completion.label_tag }}</label>
-    {{ form.time_frame_for_completion }} {{ form.time_frame_for_completion.errors }}
-
-    <label for="id_status">{{ form.status.label_tag }}</label>
-    {{ form.status }} {{ form.status.errors }}
-
-    <h3>Assign Team Leads</h3>
-    <label for="id_team_leads"> {{ form.team_leads.label_tag }}</label>
-    <div id="team_leads_container">
-        {{ form.team_leads }} {{ form.team_leads.errors }}
-    </div>
-
-    <h3>Assign Team Members</h3>
-    <label for="id_team_members">{{ form.team_members.label_tag }}</label>
-    <div id="team_members_container">
-        {{ form.team_members }} {{ form.team_members.errors }}
-    </div>
-
-    <input type='submit' value='Save' />
-
-</form>
-
-<a href="{% url 'projects:projects-list' %}">Project List</a>
-
-
 <script>
     const teamLeadsContainer = document.getElementById('team_leads_container');
     const teamMembersContainer = document.getElementById('team_members_container');
