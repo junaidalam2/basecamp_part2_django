@@ -28,10 +28,9 @@ class MessageCreateView(CreateView):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.form_class.base_fields.values():
-            if field.required:
-                field.label += ' *'
-
+        topic_field = self.form_class.base_fields.get('topic')
+        if topic_field and topic_field.required:
+            topic_field.label += ' *'
 
 class ThreadCreateView(CreateView):
     model = Thread
