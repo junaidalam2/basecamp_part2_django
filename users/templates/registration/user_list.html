@@ -16,6 +16,7 @@
                         <th>Permissions</th>
                         <th class="text-center" style="width: 10%;">Detail View</th>
                         <th class="text-center" style="width: 10%;">Edit</th>
+                        <th class="text-center" style="width: 10%;">Delete</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -39,6 +40,21 @@
                                 </span>
                             </a>
                         </td>
+                        <td class="text-center" style="width: 10%;">
+                            {% if user.pk == request.user.pk %}
+                                <a class="btn btn-outline-danger btn-sm" href="#" style="color: gray;" data-toggle="tooltip" title="A user may not delete their own profile">
+                                    <span class="material-symbols-outlined">
+                                        delete_sweep
+                                    </span>
+                                </a>
+                            {% else %}
+                                <a class="btn btn-outline-danger btn-sm" href="{% url 'users:user-delete' user.pk %}">
+                                    <span class="material-symbols-outlined">
+                                        delete_sweep
+                                    </span>
+                                </a>
+                            {% endif %}
+                        </td>
                     </tr>
                     {% empty %}
                     <tr>
@@ -51,5 +67,17 @@
     </div>
 </div>
 
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Bootstrap tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+
+</script>
 
 {% endblock %}

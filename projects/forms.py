@@ -34,13 +34,11 @@ class ProjectModelForm(forms.ModelForm):
             'time_frame_for_completion': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'id': 'id_time_frame_for_completion'}),
         }
 
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             if field.required:
                 field.label += ' *'
-
 
     def clean(self):
             cleaned_data = super().clean()

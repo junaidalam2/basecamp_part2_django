@@ -3,8 +3,15 @@ from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib.auth import login, get_user_model, update_session_auth_hash
-from django.views.generic import FormView, ListView, DetailView, UpdateView
 from .forms import SignUpForm, AdminUpdateForm, UpdateForm, CustomAuthenticationForm
+from django.views.generic import (
+    FormView, 
+    ListView, 
+    DetailView, 
+    UpdateView, 
+    DeleteView,
+)
+
 
 User = get_user_model()
 
@@ -105,3 +112,21 @@ class UserUpdateView(UserPassesTestMixin, UpdateView):
     
     def handle_no_permission(self):
         return redirect('access_forbidden') 
+    
+
+class UserDeleteView(UserPassesTestMixin, DeleteView):
+    model = User
+    template_name = 'registration/user_delete.html'
+    
+    def get_success_url(self):
+        return reverse_lazy('users:user-list')
+
+    def test_func(self):
+        user_to_delete = self.get_object()
+        return self.request.user.is_superuser or self.request.user.permissions == 'admin' or self.request.user != user_to_delete
+
+    def get_queryset(self):
+        return User.objects.exclude(id=self.request.user.id)
+
+    def handle_no_permission(self):
+        return redirect('access_forbidden')

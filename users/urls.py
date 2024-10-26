@@ -5,6 +5,7 @@ from users.views import (
     AdminUserDetailView,
     AdminUpdateView,
     UserUpdateView,
+    UserDeleteView,
 )
 from django.contrib.auth import views as auth_views
 from django.urls import path
@@ -17,4 +18,6 @@ urlpatterns = [
     path('<int:pk>/', AdminUserDetailView.as_view(), name='user-detail'),
     path('admin/<int:pk>/', AdminUpdateView.as_view(), name='user-admin-update'),
     path('profile/<int:pk>/', UserUpdateView.as_view(), name='user-update'),
+    path('delete/<int:pk>/', UserDeleteView.as_view(), name='user-delete'),
+
 ]
