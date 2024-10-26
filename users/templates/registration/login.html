@@ -1,12 +1,49 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2>Login</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-  </form>
 
-  <p>Don't have an account? <a href="{% url 'users:signup' %}">Sign up here</a></p>
+<br>
+<br>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h2>LOGIN</h2>
+      <div class="card shadow" style="width: 40rem; background-color: #e5eef7;">
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+
+            <div class="form-floating mb-3">
+              {{ form.username }}
+              <label for="id_email">Email</label>
+              {% if form.username.errors %}
+                <div class="invalid-feedback">{{ form.username.errors }}</div>
+              {% endif %}
+            </div>
+
+            <div class="form-floating mb-3">
+              {{ form.password }}
+              <label for="id_password">Password</label>
+              {% if form.password.errors %}
+                <div class="invalid-feedback">{{ form.password.errors }}</div>
+              {% endif %}
+            </div>
+
+            <button class="btn btn-primary" type="submit">Login</button>
+          </form>
+          
+          <div class="d-flex align-items-center justify-content-center mt-3">
+            <p class="mb-0"><i>Don't have an account?</i></p>
+          </div>
+          <div class="d-flex align-items-center justify-content-center mt-3">
+            <a class="btn btn-secondary ms-2" href="{% url 'users:signup' %}">Sign up here</a>
+          </div>
+        <div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+</div>
+
 {% endblock %}

@@ -4,17 +4,18 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib.auth import login, get_user_model, update_session_auth_hash
 from django.views.generic import FormView, ListView, DetailView, UpdateView
-from .forms import SignUpForm, AdminUpdateForm, UpdateForm
+from .forms import SignUpForm, AdminUpdateForm, UpdateForm, CustomAuthenticationForm
 
 User = get_user_model()
 
 
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'
+    authentication_form = CustomAuthenticationForm
 
     def get_success_url(self):
         return reverse_lazy('home')
-
+    
 
 class SignUpView(FormView):
     template_name = 'registration/signup.html'
@@ -24,8 +25,12 @@ class SignUpView(FormView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect(self.get_success_url())
-
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        print("Form submission failed. Errors:", form.errors)
+        return super().form_invalid(form)
+    
 
 class AdminUserListView(UserPassesTestMixin, ListView):
     model = User
