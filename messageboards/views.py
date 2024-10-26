@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from .models import Message, Thread
-from .forms import ThreadForm
+from .forms import ThreadForm,  MessageForm
 from projects.models import Project
 from django.views.generic import (
     CreateView,
@@ -13,7 +13,7 @@ from django.views.generic import (
 
 class MessageCreateView(CreateView):
     model = Message
-    fields = ['topic']
+    form_class = MessageForm
     template_name = 'messageboards/message_create.html'
 
     def get_success_url(self):
@@ -25,6 +25,12 @@ class MessageCreateView(CreateView):
         form.instance.created_by = self.request.user
         form.instance.last_updated_by = self.request.user
         return super().form_valid(form)
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.form_class.base_fields.values():
+            if field.required:
+                field.label += ' *'
 
 
 class ThreadCreateView(CreateView):

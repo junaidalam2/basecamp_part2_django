@@ -4,7 +4,7 @@
     <h1>Messages for {{ project.name }}</h1>
 
     {% if message_list %}
-        <table class="table table-striped table-bordered table-hover">
+        <table class="table table-dark table-striped table-bordered table-hover">
             <tbody>
                 {% for message in message_list %}
 
@@ -203,12 +203,15 @@
         <p>No messages for this project.</p>
     {% endif %}
 
-    {% if is_team_lead %}
-        <a href="{% url 'messageboards:message-create' project.pk %}">Create Message</a>
-    {% endif %}
-    
-    <a href="{% url 'projects:projects-detail' project.pk %}">View Project</a>
-
+    <div>
+        {% if is_team_lead %}
+            <a class="btn btn-primary" href="{% url 'messageboards:message-create' project.pk %}">Create Message</a>
+        {% endif %}
+        
+        <a class="btn btn-secondary" href="{% url 'projects:projects-detail' project.pk %}">View Project</a>
+        <br>
+        <br>
+    </div>
 <script>
     
     function editMessage(messageId) {
