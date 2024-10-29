@@ -22,24 +22,26 @@ This project is a Django-based application that allows users to manage projects 
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/junaidalam2/basecamp_part2_django
-   cd basecamp
+   cd basecamp```
 
 2. **Clone the repository:**
-python -m venv venv
+```python -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+```
 
 3. **Install dependencies:**
-python -m venv venv
+```python -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+```
 
 4. **Apply migrations:**
-python manage.py migrate
+```python manage.py migrate```
 
 5. **Create a superuser:**
-python manage.py createsuperuser
+```python manage.py createsuperuser```
 
 6. **Run the development server:**
-python manage.py runserver
+```python manage.py runserver```
 
 
 ## Configuration
@@ -57,10 +59,7 @@ In `settings.py`, configure the following:
 3. To login as an admin, use L: admin@gmail.com; P: password1
 3. Explore project management, message boards, and file upload features.
 
-
-
 ## Directory Structure
-
 .
 ├── src
 │   ├── basecamp         # Main Django project
