@@ -1,12 +1,6 @@
-todo:
--favicon
--readme
--gmail/github configuration
-
-
 # Basecamp Project
 
-This project is a Django-based application that allows users to manage projects, message boards, and user authentication, including third-party logins with Google and GitHub.
+This project is a Django-based application that allows users to manage projects with features for collaboration and file sharing.
 
 ## Table of Contents
 - [Features](#features)
@@ -14,24 +8,21 @@ This project is a Django-based application that allows users to manage projects,
 - [Configuration](#configuration)
 - [Usage](#usage)
 - [Directory Structure](#directory-structure)
-- [Contributing](#contributing)
-- [License](#license)
+- [The Core Team](#the-core-team)
 
 ## Features
-- **Project Management**: Create and manage multiple projects with custom fields.
-- **Message Boards**: Each project can have its own message board, allowing users to communicate and post updates.
-- **File Uploads**: Users can upload images and files related to each project.
+- **Project Management**: Create and manage multiple projects.
+- **Message Boards**: Each project has its own message board for user communication and updates.
+- **File Uploads**: Upload images and files related to each project.
 - **User Authentication**: Custom user model with email as the unique identifier.
-- **OAuth Integration**: Google and GitHub login options are available.
 - **Permissions and Roles**: Assign roles to team members (e.g., Team Lead, Team Member).
 
 ## Installation
 
-1. **Clone the repository:**
+1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/basecamp.git
+   git clone https://github.com/junaidalam2/basecamp_part2_django
    cd basecamp
-
 
 2. **Clone the repository:**
 python -m venv venv
@@ -61,10 +52,11 @@ In `settings.py`, configure the following:
 
 ## Usage
 
-1. Access the application at `http://127.0.0.1:8000`.
-2. Log in with your superuser account.
+1. Access the application at `https://basecamp-part2-django.onrender.com`.
+2. Log in with your account.
+3. To login as an admin, use L: admin@gmail.com; P: password1
 3. Explore project management, message boards, and file upload features.
-4. Enable Google or GitHub login for OAuth capabilities.
+
 
 
 ## Directory Structure
@@ -79,4 +71,11 @@ In `settings.py`, configure the following:
 │   └── templates        # HTML templates
 └── README.md
 
+
+### The Core Team
+
+Junaid Alam
+
+<span><i>Made at <a href='https://qwasar.io'>Qwasar SV -- Software Engineering School</a></i></span>
+<span><img alt="Qwasar SV -- Software Engineering School's Logo" src='https://storage.googleapis.com/qwasar-public/qwasar-logo_50x50.png' width='20px'></span>
 
