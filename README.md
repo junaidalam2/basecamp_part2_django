@@ -35,13 +35,16 @@ source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 ```
 
 4. **Apply migrations:**
-```python manage.py migrate```
+```python manage.py migrate
+```
 
 5. **Create a superuser:**
-```python manage.py createsuperuser```
+```python manage.py createsuperuser
+```
 
 6. **Run the development server:**
-```python manage.py runserver```
+```python manage.py runserver
+```
 
 
 ## Configuration
