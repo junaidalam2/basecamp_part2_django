@@ -64,7 +64,7 @@ In `settings.py`, configure the following:
 
 ## Usage
 
-1. Access the application at `https://basecamp-part2-django.onrender.com`.
+1. Access the application at <a href='https://basecamp-part2-django.onrender.com'>https://basecamp-part2-django.onrender.com</a>.
 2. Log in with your account.
 3. To login as an admin, use L: admin@gmail.com; P: password1
 3. Explore project management, message boards, and file upload features.
