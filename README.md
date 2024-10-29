@@ -20,31 +20,37 @@ This project is a Django-based application that allows users to manage projects 
 ## Installation
 
 1. **Clone the repository**:
-```bash
-   git clone https://github.com/junaidalam2/basecamp_part2_django
-   cd basecamp
+```
+bash
+git clone https://github.com/junaidalam2/basecamp_part2_django
+cd basecamp
 ```
 
 2. **Clone the repository:**
-```python -m venv venv
+```
+python -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 ```
 
 3. **Install dependencies:**
-```python -m venv venv
+```
+python -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 ```
 
 4. **Apply migrations:** <br>
-```python manage.py migrate
+```
+python manage.py migrate
 ```
 
 5. **Create a superuser:** <br>
-```python manage.py createsuperuser
+```
+python manage.py createsuperuser
 ```
 
 6. **Run the development server:** <br>
-```python manage.py runserver
+```
+python manage.py runserver
 ```
 
 
