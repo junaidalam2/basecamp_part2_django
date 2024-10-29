@@ -20,9 +20,10 @@ This project is a Django-based application that allows users to manage projects 
 ## Installation
 
 1. **Clone the repository**:
-   ```bash
+```bash
    git clone https://github.com/junaidalam2/basecamp_part2_django
-   cd basecamp```
+   cd basecamp
+```
 
 2. **Clone the repository:**
 ```python -m venv venv
@@ -35,13 +36,16 @@ source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 ```
 
 4. **Apply migrations:** <br>
-```python manage.py migrate```
+```python manage.py migrate
+```
 
 5. **Create a superuser:** <br>
-```python manage.py createsuperuser```
+```python manage.py createsuperuser
+```
 
 6. **Run the development server:** <br>
-```python manage.py runserver```
+```python manage.py runserver
+```
 
 
 ## Configuration
@@ -60,15 +64,15 @@ In `settings.py`, configure the following:
 3. Explore project management, message boards, and file upload features.
 
 ## Directory Structure
-.
-├── src
-│   ├── basecamp         # Main Django project
-│   ├── projects         # Projects app
-│   ├── users            # Custom user model and auth
-│   ├── messages         # Message boards and messaging functionality
-│   ├── staticfiles      # Directory for static files (CSS, JS, images)
-│   └── templates        # HTML templates
-└── README.md
+.<br>
+├── src<br>
+│   ├── basecamp         # Main Django project<br>
+│   ├── projects         # Projects app<br>
+│   ├── users            # Custom user model and auth<br>
+│   ├── messages         # Message boards and messaging functionality<br>
+│   ├── staticfiles      # Directory for static files (CSS, JS, images)<br>
+│   └── templates        # HTML templates<br>
+└── README.md<br>
 
 
 ### The Core Team
